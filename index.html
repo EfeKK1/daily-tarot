@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daily Tarot (No Streak, No Daily Limit)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Tarot AI Demo - No Streak/Limit</title>
 
   <!-- Google Font: Mystery Quest -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +17,8 @@
     /* RESET */
     * {
       box-sizing: border-box;
-      margin: 0; padding: 0;
+      margin: 0; 
+      padding: 0;
     }
     body {
       font-family: "Mystery Quest", cursive;
@@ -32,18 +33,22 @@
       position: relative;
       overflow-x: hidden;
     }
-    /* DARK OVERLAY */
+    /* Dark overlay for readability */
     body::before {
       content: "";
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
+      position: fixed; 
+      top: 0; 
+      left: 0;
+      width: 100%; 
+      height: 100%;
       background: rgba(0,0,0,0.5);
       pointer-events: none;
       z-index: 0;
     }
 
     .container {
-      max-width: 900px; width: 95%;
+      max-width: 900px; 
+      width: 95%;
       margin: 40px auto;
       background-color: rgba(0,0,0,0.7);
       backdrop-filter: blur(4px);
@@ -51,16 +56,23 @@
       box-shadow: 0 0 20px rgba(0,0,0,0.7);
       padding: 30px 20px;
       text-align: center;
-      position: relative; z-index: 1;
-      animation: fadeIn 1s ease forwards;
+      position: relative; 
+      z-index: 1;
+      animation: fadeIn 0.8s ease forwards;
     }
     @keyframes fadeIn {
-      0% { opacity: 0; transform: scale(0.9); }
-      100% { opacity: 1; transform: scale(1); }
+      0% {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
-
     h1 {
-      font-size: 2.2em; margin-bottom: 10px;
+      font-size: 2.2em;
+      margin-bottom: 10px;
       text-shadow: 2px 2px 4px #000;
     }
     p.subtitle {
@@ -70,10 +82,11 @@
       text-shadow: 1px 1px 2px #000;
     }
 
-    /* LANG TOGGLE */
+    /* LANG TOGGLE BUTTON */
     .lang-toggle {
       position: absolute;
-      top: 15px; right: 15px;
+      top: 15px; 
+      right: 15px;
       background-color: #dab03f;
       color: #300066;
       border: none;
@@ -91,7 +104,7 @@
       transform: scale(1.05);
     }
 
-    /* BUTTONS & MESSAGES */
+    /* BUTTONS, MESSAGES */
     button.action-btn {
       background-color: #d8af3f;
       color: #300066;
@@ -118,7 +131,7 @@
       text-shadow: 1px 1px 2px #000;
     }
 
-    /* 3-CARD LAYOUT */
+    /* 3 CARDS LAYOUT */
     .three-cards {
       display: flex;
       justify-content: center;
@@ -195,55 +208,51 @@
 </head>
 <body>
 
-  <!-- Dil Seçici Buton -->
+  <!-- Dil Seçici -->
   <button class="lang-toggle" id="langToggleBtn">TR / EN</button>
 
   <div class="container">
-    <h1 id="titleText">Daily Tarot (No Streak/Limit)</h1>
+    <h1 id="titleText">Tarot AI Demo - No Streak/Limit</h1>
     <p class="subtitle" id="subtitleText">
-      Draw 3 cards anytime you like, then optionally get an AI interpretation. Test away!
+      Draw 3 cards anytime. Automatically get an AI reading in your chosen language. Enjoy testing!
     </p>
 
-    <!-- Butonlar & Mesaj -->
     <div>
       <button class="action-btn" id="drawCardsBtn">Draw 3 Cards</button>
-      <button class="action-btn" id="aiReadingBtn" style="display:none;">AI Reading</button>
     </div>
     <div id="message"></div>
 
-    <!-- 3 Kart Yerleşimi -->
+    <!-- 3 Cards -->
     <div class="three-cards" id="threeCardsContainer"></div>
 
-    <!-- AI Yorum Çıkışı -->
+    <!-- AI Reading -->
     <div id="aiReadingContainer"></div>
   </div>
 
   <script>
     /************************************************************
-     *         BILINGUAL TEXT & BASIC UI (NO STREAK)            *
+     *                    BILINGUAL TEXT                        *
      ************************************************************/
     const uiTexts = {
       en: {
-        title: "Daily Tarot (No Streak/Limit)",
-        subtitle: "Draw 3 cards anytime you like, then optionally get an AI interpretation. Test away!",
+        title: "Tarot AI Demo - No Streak/Limit",
+        subtitle: "Draw 3 cards anytime. Automatically get an AI reading in your chosen language. Enjoy testing!",
         drawButton: "Draw 3 Cards",
-        aiButton: "AI Reading",
         synergyFallback: "",
         positionPast: "Past",
         positionPresent: "Present",
         positionFuture: "Future",
-        aiReadingIntro: "Combining these cards, here's an AI reflection:"
+        aiReadingIntro: "AI Interpretation:"
       },
       tr: {
-        title: "Günlük Tarot (Seri/Sınır Yok)",
-        subtitle: "Dilediğiniz kadar 3 kart çekin, isterseniz yapay zekâ yorumunu alın. Test için ideal!",
+        title: "Tarot AI Demo - Seri/Sınır Yok",
+        subtitle: "İstediğiniz zaman 3 kart çekin. Seçtiğiniz dilde yapay zekâ yorumunu otomatik alın. Test için keyifli!",
         drawButton: "3 Kart Çek",
-        aiButton: "AI Yorum",
         synergyFallback: "",
         positionPast: "Geçmiş",
         positionPresent: "Şimdi",
         positionFuture: "Gelecek",
-        aiReadingIntro: "Bu kartları birleştirerek yapay zekâdan gelen yorum:"
+        aiReadingIntro: "Yapay Zekâ Yorumu:"
       }
     };
 
@@ -253,39 +262,41 @@
     const titleText = document.getElementById("titleText");
     const subtitleText = document.getElementById("subtitleText");
     const drawCardsBtn = document.getElementById("drawCardsBtn");
-    const aiReadingBtn = document.getElementById("aiReadingBtn");
     const messageDiv = document.getElementById("message");
     const threeCardsContainer = document.getElementById("threeCardsContainer");
     const aiReadingContainer = document.getElementById("aiReadingContainer");
+
+    // Hangi kartlar seçildi? 
+    let chosenCards = []; 
+    // Sadece 3 kartı ve reversed bilgisini saklayacağız, 
+    // yeniden dil değişince re-render edelim.
 
     function applyLanguage() {
       const t = uiTexts[currentLang];
       titleText.textContent = t.title;
       subtitleText.textContent = t.subtitle;
       drawCardsBtn.textContent = t.drawButton;
-      aiReadingBtn.textContent = t.aiButton;
+      // Ekranda halihazırda gösterilen kartları yeniden çizelim:
+      renderChosenCards();
     }
 
     function toggleLanguage(){
       currentLang = (currentLang==="en") ? "tr" : "en";
       applyLanguage();
-      if(drewCards) {
-        // eğer AI'yı tekrar güncellemek isterseniz dil değişiminde
-        // prompt'u tekrar yollayabilirsiniz. Burada yapmıyoruz, isterseniz ekleyin.
-      }
+      // AI yorumu da dil değişince yeniden istenebilir, 
+      // ama bu örnekte tekrar otomatik istek yapmıyoruz. 
+      // Dilerseniz "aiReadingContainer"'ı sıfırlayabilir veya tekrar sorgulatabilirsiniz.
     }
+
     langToggleBtn.addEventListener("click", toggleLanguage);
 
-    // Başlangıç dil ayarını uygula
-    applyLanguage();
-
     /************************************************************
-     *                TAROT DECK (78, 24 local)                 *
-     *   Not repeating the entire deck for brevity.  EXAMPLE.   *
+     *          TAROT DECK - Name & Explanation Bilingual       *
      ************************************************************/
     const tarotDeck = [
       {
-        name: "Two of Wands",
+        nameEn: "Two of Wands",
+        nameTr: "Tılsım İkilisi", // örnek - isterseniz "Değnek İkilisi"
         image: "images/twoofwands.jpg",
         upright: {
           en: "Standing at a threshold, planning for the future. Bold action awaits.",
@@ -293,150 +304,114 @@
         },
         reversed: {
           en: "Indecision stalls your progress; weigh your options carefully.",
-          tr: "Karar verememe ilerlemeyi durduruyor; seçenekleri dikkatlice tartın."
+          tr: "Kararsızlık ilerlemeyi aksatır; seçenekleri özenle tartın."
         }
       },
       {
-        name: "Ace of Cups",
+        nameEn: "Ace of Cups",
+        nameTr: "Kupa Ası",
         image: "images/aceofcups.jpg",
         upright: {
           en: "A surge of emotion or creativity flows freely. Embrace heartfelt connections.",
-          tr: "Duygusal veya yaratıcı bir akış serbest kaldı. Samimi bağları kucaklayın."
+          tr: "Duygusal veya yaratıcı bir akış serbest kaldı. İçten bağları kucaklayın."
         },
         reversed: {
           en: "Unspoken feelings block deeper intimacy; resolve old pains.",
-          tr: "Dile gelmemiş duygular daha derin yakınlığı engelliyor; eski yaraları çözün."
+          tr: "Dile getirilmemiş duygular daha derin yakınlaşmayı engelliyor; eski acıları çözün."
         }
       },
       {
-        name: "The Chariot",
+        nameEn: "The Chariot",
+        nameTr: "Savaş Arabası",
         image: "images/thechariot.jpg",
         upright: {
           en: "Willpower and discipline drive you onward to success.",
-          tr: "İrade ve disiplin sizi başarıya doğru sürüklüyor."
+          tr: "İrade ve disiplin, sizi başarıya doğru itiyor."
         },
         reversed: {
-          en: "Scattered forces or wavering focus halt your journey. Regain control.",
-          tr: "Dağınık güçler veya dalgalanan odak yolculuğu durdurur. Kontrolü tekrar kazanın."
+          en: "Scattered forces or wavering focus stall your journey. Regain control.",
+          tr: "Dağınık güçler veya dalgalı odak yolculuğu durdurur. Kontrolü geri kazanın."
         }
       },
       {
-        name: "Ace of Swords",
+        nameEn: "Ace of Swords",
+        nameTr: "Kılıç Ası",
         image: "https://upload.wikimedia.org/wikipedia/commons/1/1b/Swords01.jpg",
         upright: {
-          en: "A clear new idea or truth cuts through confusion. Use it wisely.",
-          tr: "Net bir fikir veya gerçek karmaşayı keser. Bunu akıllıca kullanın."
+          en: "A sharp new idea or truth cuts through confusion. Use it wisely.",
+          tr: "Keskin yeni bir fikir veya gerçek, karmaşayı keser. Onu akıllıca kullanın."
         },
         reversed: {
-          en: "Clouded perception or misused logic breeds tension.",
-          tr: "Bulanık algı veya yanlış kullanılan mantık gerginlik yaratır."
+          en: "Clouded perception or misused logic leads to tension.",
+          tr: "Bulanık algı veya yanlış kullanılan mantık gerginliğe yol açar."
         }
       }
-      // ... Kalan 74 kart
+      // ...Gerisini doldurabilirsiniz
     ];
 
     /************************************************************
-     *                 DRAW LOGIC (NO DAILY LIMIT)              *
+     *                 RENDER CHOSEN CARDS                      *
      ************************************************************/
-    let drewCards = false;
-    let chosenCards = [];
-
-    drawCardsBtn.addEventListener("click", () => {
-      messageDiv.textContent = "";
-      threeCardsContainer.innerHTML="";
-      aiReadingContainer.style.display="none";
-      aiReadingContainer.textContent="";
-      aiReadingBtn.style.display="none";
-
-      // pick 3
-      const idxSet = new Set();
-      while(idxSet.size<3) {
-        idxSet.add(Math.floor(Math.random()*tarotDeck.length));
-      }
-      const chosenIdx = [...idxSet].sort((a,b)=>a-b);
-
+    function renderChosenCards(){
+      // Kartları 3CardsContainer'a tekrar bas
+      threeCardsContainer.innerHTML = "";
       const t = uiTexts[currentLang];
       const posLabels = [t.positionPast, t.positionPresent, t.positionFuture];
-      const results = [];
 
-      chosenIdx.forEach((deckI,i)=>{
-        const card = tarotDeck[deckI];
-        const isRev = Math.random()<0.5;
+      chosenCards.forEach((c, i)=>{
+        // c = { deckIndex, isReversed }
+        const cardData = tarotDeck[c.deckIndex];
+        const cardName = (currentLang==="en") ? cardData.nameEn : cardData.nameTr;
+        const cardUpright = (currentLang==="en") ? cardData.upright.en : cardData.upright.tr;
+        const cardReversed = (currentLang==="en") ? cardData.reversed.en : cardData.reversed.tr;
 
+        // container
         const cardDiv = document.createElement("div");
         cardDiv.className="card-container";
 
-        const label = document.createElement("h4");
-        label.className="position-label";
-        label.textContent=posLabels[i];
-        cardDiv.appendChild(label);
+        // label
+        const labelEl = document.createElement("h4");
+        labelEl.className="position-label";
+        labelEl.textContent = posLabels[i];
+        cardDiv.appendChild(labelEl);
 
+        // image
         const imgEl = document.createElement("img");
-        imgEl.src=card.image;
-        if(isRev) imgEl.style.transform="rotate(180deg)";
+        imgEl.src = cardData.image;
+        if(c.isReversed) imgEl.style.transform="rotate(180deg)";
         cardDiv.appendChild(imgEl);
 
-        const title = document.createElement("h5");
-        title.className="card-title";
-        title.textContent = card.name + (isRev ? " (Reversed)":"");
-        cardDiv.appendChild(title);
+        // title
+        const titleEl = document.createElement("h5");
+        titleEl.className="card-title";
+        const reversedTag = c.isReversed 
+          ? (currentLang==="en" ? " (Reversed)" : " (Ters)") 
+          : "";
+        titleEl.textContent = cardName + reversedTag;
+        cardDiv.appendChild(titleEl);
 
-        const desc = document.createElement("p");
-        desc.className="card-desc";
-        desc.textContent = isRev
-          ? card.reversed[currentLang]
-          : card.upright[currentLang];
-        cardDiv.appendChild(desc);
+        // desc
+        const descEl = document.createElement("p");
+        descEl.className="card-desc";
+        descEl.textContent = c.isReversed ? cardReversed : cardUpright;
+        cardDiv.appendChild(descEl);
 
         threeCardsContainer.appendChild(cardDiv);
-
-        results.push({name: card.name, isReversed: isRev});
       });
-
-      drewCards = true;
-      chosenCards = results;
-      aiReadingBtn.style.display="inline-block"; // now can do AI reading
-    });
-
-    /************************************************************
-     *                   AI READING LOGIC                       *
-     ************************************************************/
-    aiReadingBtn.addEventListener("click", async ()=>{
-      if(!drewCards) return;
-      aiReadingContainer.style.display="block";
-      aiReadingContainer.textContent="...";
-
-      try {
-        const aiText = await doAIRequest(chosenCards, currentLang);
-        const t = uiTexts[currentLang];
-        aiReadingContainer.textContent = t.aiReadingIntro + "\n\n" + aiText;
-      } catch(err){
-        aiReadingContainer.textContent="AI request failed: " + err.message;
-      }
-    });
-
-    // Basit Prompt
-    function buildPrompt(cards, lang){
-      const cList = cards.map(c=>{
-        let rTag = c.isReversed ? (lang==="en"?"(Reversed)":"(Ters)") : "";
-        return `- ${c.name} ${rTag}`;
-      }).join("\n");
-      if(lang==="en"){
-        return `Below are 3 tarot cards the user has drawn:\n${cList}\n
-You are an expert tarot reader. Provide a cohesive interpretation for the user, focusing on practical and emotional insights. Write in a supportive tone.`;
-      } else {
-        return `İşte kullanıcının çektiği 3 kart:\n${cList}\n
-Sen uzman bir tarot okuyucususun. Kullanıcıya yönelik bütüncül bir yorum yap, pratik ve duygusal çıkarımlara odaklan. Destekleyici bir üslup kullan.`;
-      }
     }
 
-    // AI istek fonksiyonu (DEMO: front-end => openAI)
-    async function doAIRequest(cards, lang) {
+    /************************************************************
+     *       AI REQUEST: GÖRSEL, METİN, PROMPT vb. (DEMO)       *
+     ************************************************************/
+    async function fetchAIReading(cards, lang){
+      // cards = [ {deckIndex, isReversed}, ... ]
+      // Prompt metnini oluştur
       const prompt = buildPrompt(cards, lang);
-      // Burada API key front-end'de gömülü, GÜVENLİ DEĞİL
-      const apiKey = "YOUR_OPENAI_API_KEY";
 
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      // BURADA front-end -> openAI
+      // Gerçek projede backend'e istek atın
+      const apiKey = "YOUR_OPENAI_API_KEY"; // DEMO AMAÇLI
+      const resp = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
           "Content-Type":"application/json",
@@ -448,8 +423,8 @@ Sen uzman bir tarot okuyucususun. Kullanıcıya yönelik bütüncül bir yorum y
             {
               role: "system",
               content: (lang==="en")
-                ? "You are an expert tarot reader, providing supportive insights."
-                : "Uzman bir tarot okuyucususun, destekleyici içgörüler sunuyorsun."
+                ? "You are an expert tarot reader. Provide supportive and thorough insights."
+                : "Sen uzman bir tarot okuyucususun. Detaylı ve destekleyici içgörüler sunuyorsun."
             },
             {
               role: "user",
@@ -460,9 +435,75 @@ Sen uzman bir tarot okuyucususun. Kullanıcıya yönelik bütüncül bir yorum y
           temperature: 0.9
         })
       });
-      const data = await response.json();
-      return data.choices?.[0]?.message?.content || "";
+
+      const data = await resp.json();
+      const aiText = data?.choices?.[0]?.message?.content || "";
+      return aiText;
     }
+
+    function buildPrompt(cards, lang){
+      // Ekrandaki 3 kartın ismi + (Reversed/Ters) bilgisi
+      let lines = cards.map((c, i)=>{
+        const cd = tarotDeck[c.deckIndex];
+        const nm = (lang==="en") ? cd.nameEn : cd.nameTr;
+        const tag = c.isReversed 
+          ? (lang==="en" ? "(Reversed)" : "(Ters)")
+          : "";
+        return `- ${nm} ${tag}`;
+      }).join("\n");
+
+      if(lang==="en"){
+        return `Below are 3 tarot cards the user just drew:\n${lines}\n
+Please provide a cohesive interpretation, focusing on practical, uplifting insights. Write in a warm, empathic tone.`;
+      } else {
+        return `Kullanıcının şimdi çektiği 3 kart şöyle:\n${lines}\n
+Lütfen bütüncül bir yorum yap, pratik ve motive edici önerilere odaklan. Sıcak ve empatik bir üslup kullan.`;
+      }
+    }
+
+    /************************************************************
+     *                DRAW CARDS & AI READING                   *
+     ************************************************************/
+    const drawCardsBtnEl = document.getElementById("drawCardsBtn");
+
+    drawCardsBtnEl.addEventListener("click", async ()=>{
+      // Her seferinde 3 kart seç
+      chosenCards = [];
+      const idxSet = new Set();
+      while(idxSet.size<3){
+        idxSet.add(Math.floor(Math.random()*tarotDeck.length));
+      }
+      const sortedIdx = [...idxSet].sort((a,b)=>a-b);
+
+      sortedIdx.forEach(idx =>{
+        chosenCards.push({
+          deckIndex: idx,
+          isReversed: (Math.random()<0.5)
+        });
+      });
+
+      // Kartları ekrana bas
+      renderChosenCards();
+
+      // Ardından AI reading
+      aiReadingContainer.style.display="block";
+      aiReadingContainer.textContent = (currentLang==="en")
+        ? "Loading AI reading..."
+        : "Yapay zekâ yorumu yükleniyor...";
+
+      try {
+        const aiText = await fetchAIReading(chosenCards, currentLang);
+        const intro = (currentLang==="en")
+          ? uiTexts.en.aiReadingIntro
+          : uiTexts.tr.aiReadingIntro;
+        aiReadingContainer.textContent = intro + "\n\n" + aiText;
+      } catch(err){
+        aiReadingContainer.textContent = "AI Error: " + err.message;
+      }
+    });
+
+    // Sayfa ilk açıldığında metinleri uygula
+    applyLanguage();
   </script>
 </body>
 </html>
