@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="tr"> <!-- Varsayılanı Türkçe yapıyoruz, ama kod içinde EN de var -->
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Daily Tarot</title>
 
-  <!-- Font: "Mystery Quest" -->
+  <!-- Google Font: Mystery Quest -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -14,15 +14,16 @@
   >
 
   <style>
-    /* RESET & BASE */
+    /* RESET */
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
+
     body {
       font-family: "Mystery Quest", cursive;
-      background: url("https://images.unsplash.com/photo-1615315685401-1396dcc53f61?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80")
+      background: url("https://images.unsplash.com/photo-1615315685401-1396dcc53f61?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80") 
         no-repeat center center fixed;
       background-size: cover;
       color: #fff;
@@ -33,7 +34,7 @@
       position: relative;
       overflow-x: hidden;
     }
-    /* DARK OVERLAY */
+    /* Dark overlay for readability */
     body::before {
       content: "";
       position: fixed;
@@ -50,10 +51,10 @@
       max-width: 900px;
       width: 95%;
       margin: 40px auto;
-      background-color: rgba(0,0,0,0.7);
+      background-color: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(4px);
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.7);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
       padding: 30px 20px;
       text-align: center;
       position: relative;
@@ -70,6 +71,7 @@
         transform: scale(1);
       }
     }
+
     h1 {
       font-size: 2.2em;
       margin-bottom: 10px;
@@ -82,7 +84,7 @@
       color: #ddd;
     }
 
-    /* LANGUAGE TOGGLE */
+    /* Language Toggle */
     .lang-toggle {
       position: absolute;
       top: 15px;
@@ -97,13 +99,14 @@
       cursor: pointer;
       transition: transform 0.3s ease, background-color 0.3s ease;
       font-family: inherit;
-      z-index: 2; /* above container */
+      z-index: 2; 
     }
     .lang-toggle:hover {
       background-color: #bf9a34;
       transform: scale(1.05);
     }
 
+    /* Streak & Button */
     #streakContainer {
       font-size: 1.2em;
       margin-bottom: 15px;
@@ -126,6 +129,7 @@
       background-color: #bf9a34;
       transform: scale(1.05);
     }
+
     #message {
       margin-top: 8px;
       font-size: 1.05em;
@@ -133,6 +137,8 @@
       min-height: 24px; 
       text-shadow: 1px 1px 2px #000;
     }
+
+    /* 3 Cards Layout */
     .three-cards {
       display: flex;
       justify-content: center;
@@ -192,44 +198,17 @@
       text-align: justify;
       line-height: 1.3;
     }
-    #comboMessage {
-      display: none;
-      margin-top: 20px;
-      background-color: rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.3);
-      font-size: 1em;
-      animation: fadeIn 1s ease forwards;
-      backdrop-filter: blur(5px);
-    }
-    @keyframes fadeIn {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
-    }
-
-    @media (max-width: 480px) {
-      .three-cards {
-        flex-direction: column;
-        align-items: center;
-      }
-      .card-container {
-        min-width: 80%;
-      }
-      .card-container img {
-        max-width: 140px;
-      }
-    }
   </style>
 </head>
+
 <body>
-  <!-- Dil Seçme Butonu -->
+  <!-- Language Toggle Button -->
   <button class="lang-toggle" id="langToggleBtn">TR / EN</button>
 
   <div class="container">
     <h1 id="titleText">Daily Tarot</h1>
     <p class="subtitle" id="subtitleText">
-      Draw your three cards once a day. Keep your streak blazing among the stars, and behold any special cosmic synergy that emerges.
+      Draw your three cards once a day. Keep your streak blazing among the stars, and let each card guide you with deeper advice.
     </p>
 
     <div id="streakContainer"></div>
@@ -238,20 +217,19 @@
     <div id="message"></div>
 
     <div class="three-cards" id="threeCardsContainer"></div>
-    <div id="comboMessage"></div>
   </div>
 
   <script>
     /************************************************************
-     *                     BILINGUAL TEXT                       *
+     *             BILINGUAL UI TEXTS (EN / TR)                 *
      ************************************************************/
     const uiTexts = {
       en: {
         title: "Daily Tarot",
-        subtitle: "Draw your three cards once a day. Keep your streak blazing among the stars, and behold any special cosmic synergy that emerges.",
+        subtitle: "Draw your three cards once a day. Keep your streak blazing among the stars, and let each card guide you with deeper advice.",
         drawButton: "Draw 3 Cards",
-        alreadyDrewMsg: "You have already invoked today's tarot. Let the stars shift and return tomorrow!",
-        synergyFallback: "These three forces unite under today's cosmic alignment with a subtle message. Listen carefully, for the stars speak in mysteries beyond words.",
+        alreadyDrewMsg: "You have already drawn today's tarot. Let the day pass and come back tomorrow!",
+        synergyFallback: "", /* Not used, no combos. */
         streakLabel: "Streak",
         positionPast: "Past",
         positionPresent: "Present",
@@ -259,10 +237,10 @@
       },
       tr: {
         title: "Günlük Tarot",
-        subtitle: "Günde bir kez üç kartınızı seçin. Yıldızlar altında serüveninizi sürdürün ve eğer özel bir kozmik sinerji oluşursa keşfedin.",
+        subtitle: "Günde bir kez üç kart seçin. Yıldızlar arasında serinizi sürdürün ve her kartın derin önerileriyle yolunuzu bulun.",
         drawButton: "3 Kart Çek",
-        alreadyDrewMsg: "Bugünün tarotunu zaten çektiniz. Yıldızların hareket etmesini bekleyip yarın tekrar deneyin!",
-        synergyFallback: "Bugünkü kozmik düzen altında bu üç güç ince bir mesaj fısıldıyor. Dikkatlice dinleyin; yıldızlar kelimelerin ötesinde sırlar fısıldar.",
+        alreadyDrewMsg: "Bugünün tarotunu zaten çektiniz. Günün geçmesini bekleyip yarın tekrar gelin!",
+        synergyFallback: "",
         streakLabel: "Seri",
         positionPast: "Geçmiş",
         positionPresent: "Şimdi",
@@ -270,492 +248,421 @@
       }
     };
 
-    let currentLang = "en"; // Varsayılan İngilizce
-    const langToggleBtn = document.getElementById("langToggleBtn");
+    let currentLang = "en"; // varsayılan dil (İngilizce)
 
-    // Dil değiştirme fonksiyonu
+    /************************************************************
+     *         HELPER: DİL DEĞİŞTİRME (UI METİNLERİ)            *
+     ************************************************************/
+    const langToggleBtn = document.getElementById("langToggleBtn");
+    const titleText = document.getElementById("titleText");
+    const subtitleText = document.getElementById("subtitleText");
+    const drawCardsBtn = document.getElementById("drawCardsBtn");
+    const messageDiv = document.getElementById("message");
+    const streakContainer = document.getElementById("streakContainer");
+
+    function applyLanguage() {
+      const t = uiTexts[currentLang];
+      titleText.textContent = t.title;
+      subtitleText.textContent = t.subtitle;
+      drawCardsBtn.textContent = t.drawButton;
+      if (lastDrawDate === formatDate()) {
+        messageDiv.textContent = t.alreadyDrewMsg;
+      }
+      updateStreakDisplay(); 
+    }
+
     function toggleLanguage() {
       currentLang = (currentLang === "en") ? "tr" : "en";
       applyLanguage();
     }
-
-    function applyLanguage() {
-      const textData = uiTexts[currentLang];
-      document.getElementById("titleText").textContent = textData.title;
-      document.getElementById("subtitleText").textContent = textData.subtitle;
-      document.getElementById("drawCardsBtn").textContent = textData.drawButton;
-      
-      // Streak Container da güncellenecek
-      updateStreakDisplay(); // oradaki label'ı yenilemek için
-
-      // Ekranda şu an "You've already..." ya da "Bugünün tarotunu..." gibi mesaj görünüyorsa,
-      // dil değiştirdiğimizde anında değişmesi isteniyorsa (zaten daily block):
-      if (lastDrawDate === formatDate()) {
-        messageDiv.textContent = textData.alreadyDrewMsg;
-      }
-      // synergyFallback -> comboMessage fallback'ta kullanılacak
-    }
-
     langToggleBtn.addEventListener("click", toggleLanguage);
 
     /************************************************************
-     *                 TAROT DECK (78 CARDS)                    *
-     *  Sadece sizin söylediğiniz 24 kart images/...            *
-     *  Diğerleri Wikimedia linkleriyle duruyor.                *
+     *          TAROT DESTE (78 KART) -> 24 KART LOKAL          *
+     *  Kalanları kısmen Wikimedia linki, hepsi ikidilli.       *
+     *  Her kart: upright: { en: "...", tr: "..." }, reversed: ...
      ************************************************************/
     const tarotDeck = [
+      // Örnek: Sizin 24 kart - images/xxx.jpg
       {
         name: "Two of Wands",
         image: "images/twoofwands.jpg",
         upright: {
-          en: "Planning and considering possibilities for the future.",
-          tr: "Gelecek için olasılıkları planlamak ve değerlendirmek."
+          en: "You stand at a threshold, planning your future steps. Take bold action after careful thought; the world awaits your initiative.",
+          tr: "Bir eşikte duruyorsunuz, gelecek adımlarınızı planlıyorsunuz. Dikkatli düşünüp cesur hareket edin; dünya atılımınızı bekliyor."
         },
         reversed: {
-          en: "Hesitation or fear of the unknown can hold you back.",
-          tr: "Tereddüt veya bilinmeyen korkusu sizi geri tutabilir."
+          en: "Indecision and overthinking might stall your progress. Balance your fears with realistic goals, and move forward with caution.",
+          tr: "Karar verememe ve fazla düşünme ilerlemenizi durdurabilir. Korkularınızı gerçekçi hedeflerle dengeleyip, dikkatle ilerleyin."
         }
       },
       {
         name: "Ace of Cups",
         image: "images/aceofcups.jpg",
         upright: {
-          en: "New emotional or creative beginnings, overflowing potential.",
-          tr: "Yeni duygusal veya yaratıcı başlangıçlar, potansiyeliniz taşıyor."
+          en: "A wellspring of emotion or creativity is opening for you. Embrace heartfelt connections and let compassion flow.",
+          tr: "Duygusal veya yaratıcı bir kaynak sizin için açılıyor. İçten bağları kucaklayın ve şefkati akışına bırakın."
         },
         reversed: {
-          en: "Repressed emotions or a blocked heart keep you from connecting.",
-          tr: "Bastırılmış duygular veya tıkanmış bir kalp sizi bağlantı kurmaktan alıkoyuyor."
+          en: "Unspoken feelings or emotional blockage hinder deeper intimacy. Healing old wounds may unlock genuine affection.",
+          tr: "Dile getirilmemiş duygular veya duygusal tıkanıklık, derin yakınlaşmayı engelliyor. Eski yaraları iyileştirmek gerçek sevgiye kapı açabilir."
         }
       },
       {
         name: "The Chariot",
         image: "images/thechariot.jpg",
         upright: {
-          en: "Determination and forward momentum lead to victory.",
-          tr: "Kararlılık ve ileri ivme sizi zafere götürür."
+          en: "Your determination and self-control fuel your journey to success. Harness opposing forces and direct them with confidence.",
+          tr: "Kararlılığınız ve özdenetiminiz başarı yolculuğunuzu besliyor. Zıt güçleri kontrol edin ve güvenle yönlendirin."
         },
         reversed: {
-          en: "Scattered energy or loss of direction stalls your progress.",
-          tr: "Dağınık enerji veya yön kaybı ilerlemenizi engelliyor."
+          en: "Scattered energy or internal conflict halts your progress. Regain your focus and align your will before proceeding.",
+          tr: "Dağınık enerji veya içsel çatışma ilerlemenizi durduruyor. Devam etmeden önce odağınızı ve iradenizi yeniden toplayın."
         }
       },
       {
         name: "Queen of Swords",
         image: "images/queenofswords.jpg",
         upright: {
-          en: "Clarity of mind and direct communication—fair but firm.",
-          tr: "Zihin açıklığı ve doğrudan iletişim—adil ama kararlı."
+          en: "You offer clear logic and unbiased perspective. Communicate truth gently, but stand firm in your convictions.",
+          tr: "Tarafsız bir bakış ve net mantık sunuyorsunuz. Gerçeği nazikçe aktarın ancak inançlarınızdan ödün vermeyin."
         },
         reversed: {
-          en: "Overly critical or distant; risk of cutting remarks.",
-          tr: "Aşırı eleştirel veya mesafeli; keskin sözler etme riski."
+          en: "Coldness or harsh criticism may push people away. Balance honesty with empathy to maintain meaningful bonds.",
+          tr: "Soğuk veya sert eleştiriler insanları uzaklaştırabilir. Dürüstlüğü şefkatle dengeleyerek anlamlı bağları koruyun."
         }
       },
       {
         name: "Knight of Pentacles",
         image: "images/knightofpentacles.jpg",
         upright: {
-          en: "Steady progress, hard work, and practical routines.",
-          tr: "İstikrarlı ilerleme, sıkı çalışma ve pratik rutinler."
+          en: "Steady diligence and commitment define your path. Through hard work and patient methods, you’ll build lasting security.",
+          tr: "İstikrarlı özen ve bağlılık yolunuzu belirler. Sıkı çalışma ve sabırlı yöntemlerle kalıcı güvenlik oluşturacaksınız."
         },
         reversed: {
-          en: "Stagnation or stubbornness slows all forward motion.",
-          tr: "Durgunluk veya inatçılık, tüm ilerlemeyi yavaşlatıyor."
+          en: "Rigidity or stagnation could undermine your efforts. Adapt to new methods or risk standing still indefinitely.",
+          tr: "Katılık veya durgunluk çabalarınızı zayıflatabilir. Yeni yöntemlere uyum sağlayın veya süresiz olarak yerinizde sayma riskiyle karşılaşın."
         }
       },
       {
         name: "The High Priestess",
         image: "images/thehighpriestess.jpg",
         upright: {
-          en: "Trust your intuition and embrace the mystery.",
-          tr: "Sezgilerine güven ve gizeme kucak aç."
+          en: "Listen to your inner voice and observe subtle signs. Wisdom lies beyond surface appearances.",
+          tr: "İç sesinize kulak verin ve ince işaretleri gözlemleyin. Bilgelik yüzeyin ötesinde gizlidir."
         },
         reversed: {
-          en: "Secrets are festering or instincts ignored.",
-          tr: "Sırlar büyüyor veya sezgiler ihmal ediliyor."
+          en: "Secrets or self-doubt cloud your judgment. Confront hidden truths to restore clarity.",
+          tr: "Gizli sırlar veya kendinden şüphe yargınızı karartıyor. Netliği geri kazanmak için saklı gerçeklerle yüzleşin."
         }
       },
       {
         name: "King of Wands",
         image: "images/kingofwands.jpg",
         upright: {
-          en: "Bold leadership and inspiration. Fire up your vision.",
-          tr: "Cesur liderlik ve ilham. Vizyonunu ateşle."
+          en: "You lead with passion and vision. Inspire others with your bold ideas, but keep your temper in check.",
+          tr: "Tutku ve vizyonla liderlik ediyorsunuz. Cesur fikirlerinizle başkalarını harekete geçirin, öfkenizi ise dizginleyin."
         },
         reversed: {
-          en: "Tyrannical or impulsive, burning bridges behind you.",
-          tr: "Zorba ya da fevri davranışlar, geri dönüşü olmayan köprüler yakabilir."
+          en: "Impulsiveness or arrogance might sabotage your goals. Temper your fiery energy with thoughtful planning.",
+          tr: "Fevrilik veya kibir hedeflerinizi baltalayabilir. Ateşli enerjinizi düşünceli bir planlamayla dengeleyin."
         }
       },
       {
         name: "Seven of Pentacles",
         image: "images/sevenofpentacles.jpg",
         upright: {
-          en: "Patience and steady growth—efforts bear fruit soon.",
-          tr: "Sabır ve düzenli gelişim—çabalarınız yakında meyve verecek."
+          en: "Hard work is taking root, though results may be slow. Continue nurturing your efforts for a solid harvest.",
+          tr: "Sıkı çalışmalarınız kök salıyor ancak sonuçlar yavaş gelebilir. Emeklerinizi beslemeye devam edin; sağlam bir hasat elde edeceksiniz."
         },
         reversed: {
-          en: "Impatience or poor planning may lead to disappointment.",
-          tr: "Sabırsızlık veya yetersiz planlama hayal kırıklığına yol açabilir."
+          en: "Growing impatience or doubt can derail progress. Reassess your methods and stay consistent for true rewards.",
+          tr: "Artan sabırsızlık veya şüphe ilerlemeyi raydan çıkarabilir. Yöntemlerinizi gözden geçirin ve gerçek kazanç için istikrarlı kalın."
         }
       },
       {
         name: "Knight of Wands",
         image: "images/knightofwands.jpg",
         upright: {
-          en: "Passion and adventure—charging ahead with fiery energy.",
-          tr: "Tutku ve macera—ateşli bir enerjiyle ileriye atılma."
+          en: "Your adventurous spirit ignites new possibilities. Embrace bold moves, but prepare for rapid shifts.",
+          tr: "Maceracı ruhunuz yeni ihtimalleri alevlendiriyor. Cesur adımları kucaklayın, ancak ani değişimlere de hazırlıklı olun."
         },
         reversed: {
-          en: "Reckless or hotheaded actions can create chaos.",
-          tr: "Düşüncesiz veya öfkeli hareketler kaos yaratabilir."
+          en: "Reckless haste can lead to chaos. Slow down slightly to harness your passion constructively.",
+          tr: "Düşüncesiz acelecilik kaosa neden olabilir. Tutkunuzu yapıcı şekilde kullanmak için biraz yavaşlayın."
         }
       },
       {
         name: "Six of Pentacles",
         image: "images/sixofpentacles.jpg",
         upright: {
-          en: "Generosity and balanced giving/receiving create harmony.",
-          tr: "Cömertlik ve dengeli alıp verme, uyum yaratır."
+          en: "Give and receive in balanced measure. Mutual support fosters trust and well-being.",
+          tr: "Alıp vermeyi dengede tutun. Karşılıklı destek, güven ve esenliğe zemin hazırlar."
         },
         reversed: {
-          en: "Unequal exchange or hidden strings attached to generosity.",
-          tr: "Eşit olmayan alışveriş veya cömertliğin ardında gizli şartlar olabilir."
+          en: "One-sided generosity or hidden motives disrupt harmony. Reevaluate the fairness in each exchange.",
+          tr: "Tek taraflı cömertlik veya gizli niyetler uyumu bozar. Her alışverişin adaletini yeniden değerlendirin."
         }
       },
       {
         name: "King of Cups",
         image: "images/kingofcups.jpg",
         upright: {
-          en: "Emotional maturity and compassion, a calm guiding presence.",
-          tr: "Duygusal olgunluk ve şefkat, sakin bir rehberlik varlığı."
+          en: "Emotional mastery and compassion guide you. Offer a calm harbor for those facing turbulent feelings.",
+          tr: "Duygusal ustalık ve şefkat size rehberlik ediyor. Fırtınalı duygular yaşayanlara sakin bir liman sunun."
         },
         reversed: {
-          en: "Moodiness or manipulation lurk beneath the surface.",
-          tr: "Değişken ruh hali veya manipülasyon, derinlerde saklı olabilir."
+          en: "Suppressed emotions or manipulative behavior lurk beneath the surface. Seek honest connections for true harmony.",
+          tr: "Bastırılmış duygular veya manipülatif davranışlar derinde saklı olabilir. Gerçek uyum için dürüst bağlar arayın."
         }
       },
       {
         name: "Eight of Pentacles",
         image: "images/eightofpentacles.jpg",
         upright: {
-          en: "Focused effort and skill-building—master your craft.",
-          tr: "Odaklanmış çaba ve beceri geliştirme—işinizde ustalaşın."
+          en: "Skill-building, meticulous work, and dedication yield results. Perfect your craft through patience.",
+          tr: "Beceri geliştirme, titiz çalışma ve adanmışlık sonuç getirir. Sabırla işinizde ustalaşın."
         },
         reversed: {
-          en: "Sloppy work or lack of diligence leads to poor results.",
-          tr: "Özensiz iş veya ihmalkârlık, zayıf sonuçlara yol açar."
+          en: "Cut corners or half-hearted effort lead to subpar outcomes. Commit fully or risk diminishing returns.",
+          tr: "Kolaycılık veya gönülsüz çaba vasat sonuçlar doğurur. Kendinizi tamamen verin ya da azalan getirileri göze alın."
         }
       },
       {
         name: "Nine of Pentacles",
         image: "images/nineofpentacles.jpg",
         upright: {
-          en: "Enjoying the fruits of your labor, self-sufficiency, and comfort.",
-          tr: "Emeklerinizin meyvelerinin tadını çıkarmak, özgüven ve konfor."
+          en: "Self-reliance and material comfort come from your past dedication. Enjoy this moment of ease.",
+          tr: "Özverili çabanız, kendi kendinize yetebilme ve maddi rahatlık getiriyor. Bu sakin anın tadını çıkarın."
         },
         reversed: {
-          en: "Overindulgence or feeling empty despite material success.",
-          tr: "Aşırı tüketim veya maddi başarıya rağmen içsel boşluk hissi."
+          en: "Overindulgence or shallow comfort might breed emptiness. Seek inner fulfillment, not just luxury.",
+          tr: "Aşırı tüketim veya yüzeysel rahatlık boşluk yaratabilir. Sadece lükse değil, içsel tatmine de yönelin."
         }
       },
       {
         name: "Five of Cups",
         image: "images/fiveofcups.jpg",
         upright: {
-          en: "Loss and disappointment—grieve, but notice what remains.",
-          tr: "Kayıp ve hayal kırıklığı—yas tutun fakat kalanlara da bakın."
+          en: "Painful disappointments weigh on your heart. Grieve what’s lost, yet acknowledge hidden blessings nearby.",
+          tr: "Acı veren hayal kırıklıkları kalbinize yük oluyor. Kaybettiklerinize yas tutun ama yakındaki gizli nimetleri de fark edin."
         },
         reversed: {
-          en: "Healing from sorrow, slowly shifting focus to hope again.",
-          tr: "Üzüntüden iyileşme, yavaş yavaş umuda yeniden yönelme."
+          en: "A slow return to hope after sorrow. Embrace healing and allow optimism a place in your life again.",
+          tr: "Üzüntüden sonra yavaşça umuda dönüş. İyileşmeyi kucaklayın ve iyimserliğe yeniden hayatınızda yer açın."
         }
       },
       {
         name: "Eight of Swords",
         image: "images/eightofswords.jpg",
         upright: {
-          en: "Feeling trapped by circumstances or limiting beliefs.",
-          tr: "Koşullar veya sınırlayıcı inançlarla hapsolmuş hissetmek."
+          en: "You may feel trapped by limitations, but your mind holds the greatest key. Recognize fear’s illusions.",
+          tr: "Sınırlamalarla kapana kısılmış hissedebilirsiniz; ancak en güçlü anahtar zihninizde. Korkunun illüzyonlarını fark edin."
         },
         reversed: {
-          en: "Escaping mental prisons—recognizing you hold the key.",
-          tr: "Zihinsel hapishaneden kurtulmak—anahtarın sizde olduğunu fark etmek."
+          en: "Freedom dawns as you see beyond mental blocks. Face each worry to find a clearer path forward.",
+          tr: "Zihinsel engellerin ötesini gördükçe özgürlük doğuyor. Her endişeyle yüzleşin, daha net bir yol bulacaksınız."
         }
       },
       {
         name: "Queen of Pentacles",
         image: "images/queenofpentacles.jpg",
         upright: {
-          en: "Nurturing practicality—balancing home, finances, and comfort.",
-          tr: "Şefkatli bir pratiklik—ev, finans ve konfor arasında denge kurmak."
+          en: "Supportive, practical, and caring, you nurture growth in all around you. Mind both home and finances with ease.",
+          tr: "Destekleyici, pratik ve şefkatli biri olarak çevrenizdeki herkesi büyütüyorsunuz. Hem evi hem de finansı kolaylıkla idare edin."
         },
         reversed: {
-          en: "Overly materialistic or neglectful of deeper emotional needs.",
-          tr: "Aşırı maddiyatçı veya derin duygusal ihtiyaçları ihmal ediyor olabilir."
+          en: "Neglect of emotional warmth or an over-focus on material gain can strain relationships. Seek balance and empathy.",
+          tr: "Duygusal sıcaklığı ihmal etmek veya maddiyata aşırı odaklanmak ilişkileri gerer. Denge ve empati arayın."
         }
       },
       {
         name: "The Emperor",
         image: "images/theemperor.jpg",
         upright: {
-          en: "Authority, structure, and stability. Lead with confidence.",
-          tr: "Otorite, yapı ve istikrar. Güvenle liderlik edin."
+          en: "You embody authority, order, and structure. By leading calmly, you build a stable foundation for all.",
+          tr: "Otorite, düzen ve yapıyı temsil ediyorsunuz. Sakin liderlikle herkes için sağlam bir temel inşa edersiniz."
         },
         reversed: {
-          en: "Domineering or rigid. A need to soften control.",
-          tr: "Baskıcı veya katı. Kontrolü yumuşatmaya ihtiyaç var."
+          en: "Tyranny or loss of control can unravel progress. Temper discipline with understanding for true respect.",
+          tr: "Zorbalık veya kontrol kaybı ilerlemeyi çökertir. Disiplini anlayışla harmanlayarak gerçek saygı kazanın."
         }
       },
       {
         name: "The Empress",
         image: "images/theempress.jpg",
         upright: {
-          en: "Creativity and abundance flourish—fertile ground for growth.",
-          tr: "Yaratıcılık ve bolluk gelişir—büyüme için verimli bir zemin."
+          en: "Creative abundance and maternal energy flow. Cultivate ideas and relationships in a warm, nurturing space.",
+          tr: "Yaratıcı bolluk ve anaç enerji akıyor. Fikirleri ve ilişkileri sıcak, besleyici bir ortamda büyütün."
         },
         reversed: {
-          en: "Blocked expression or smothering energy stifles your flow.",
-          tr: "Engellenmiş ifade veya bunaltıcı enerji, akışınızı durduruyor."
+          en: "Smothering or creative blocks hinder growth. Relax your hold and let nature take its course.",
+          tr: "Bunaltıcı tutum veya yaratıcı tıkanmalar gelişimi engelliyor. Kontrolü biraz gevşetin ve doğallığa izin verin."
         }
       },
       {
         name: "Ace of Wands",
         image: "images/aceofwands.jpg",
         upright: {
-          en: "A surge of inspiration or passion. Start your bold project now!",
-          tr: "İlham veya tutku yükseliyor. Cesur projenize hemen başlayın!"
+          en: "A burst of passion and motivation surges. Channel this energy into bold new ventures without delay.",
+          tr: "Tutku ve motivasyon patlaması yaşıyorsunuz. Bu enerjiyi cesur yeni girişimlere vakit kaybetmeden yöneltin."
         },
         reversed: {
-          en: "A false start or creative block—find a new spark to reignite.",
-          tr: "Yanlış bir başlangıç veya yaratıcılık tıkanması—yeniden ateşlemek için yeni bir kıvılcım bulun."
+          en: "Lack of direction or sudden discouragement blocks your spark. Seek fresh inspiration to reignite the flame.",
+          tr: "Yön eksikliği veya ani heves kırılması kıvılcımınızı söndürüyor. Alevi yeniden yakmak için taze ilham arayın."
         }
       },
       {
         name: "Three of Pentacles",
         image: "images/threeofpentacles.jpg",
         upright: {
-          en: "Teamwork, collaboration—everyone’s skill combines to build success.",
-          tr: "Takım çalışması, işbirliği—herkesin becerisi birleşerek başarıyı inşa eder."
+          en: "Collaboration, shared expertise, and respect build a solid project. Recognize each person’s unique skill.",
+          tr: "İşbirliği, ortak uzmanlık ve saygı sağlam bir proje kurar. Her kişinin benzersiz becerisini tanıyın."
         },
         reversed: {
-          en: "Disorganized effort or lack of cooperation undermines the goal.",
-          tr: "Düzensiz çaba veya işbirliği eksikliği hedefi zayıflatır."
+          en: "Miscommunication or ego battles disrupt teamwork. Encourage openness and humility for true success.",
+          tr: "Yanlış iletişim veya ego çatışmaları ekip çalışmasını bozar. Gerçek başarı için açıklığı ve alçakgönüllülüğü teşvik edin."
         }
       },
       {
         name: "Eight of Wands",
         image: "images/eightofwands.jpg",
         upright: {
-          en: "Swift action or rapid communication—momentum is on your side.",
-          tr: "Hızlı eylem veya ani iletişim—momentum sizden yana."
+          en: "Rapid developments or swift communication bring excitement. Stay focused to keep control of the pace.",
+          tr: "Hızlı gelişmeler veya ani iletişim heyecan yaratır. Hızı kontrol etmek için dikkatinizi koruyun."
         },
         reversed: {
-          en: "Delays or confusion. Slow down to avoid chaos in transit.",
-          tr: "Gecikmeler veya karışıklık. Kaosu önlemek için yavaşlayın."
+          en: "Delays, confusion, or misdirected energy stall progress. Slow down and clarify to avoid chaos.",
+          tr: "Gecikmeler, karışıklık veya yanlış yönlendirilmiş enerji ilerlemeyi durduruyor. Kaosu önlemek için yavaşlayın ve netleştirin."
         }
       },
       {
         name: "Page of Swords",
         image: "images/pageofswords.jpg",
         upright: {
-          en: "Curiosity and quick thinking. Gather info, but watch sharp words.",
-          tr: "Merak ve hızlı düşünme. Bilgi toplayın, ancak sert sözlere dikkat edin."
+          en: "Curiosity drives you to seek truths, but be tactful in sharing them. Observation is your ally.",
+          tr: "Merak sizi gerçekleri aramaya itiyor, ancak bunları paylaşırken nazik olun. Gözlem sizin dostunuzdur."
         },
         reversed: {
-          en: "Gossip or hasty judgment. Temper your tongue to avoid trouble.",
-          tr: "Dedikodu veya aceleci yargı. Sorunlardan kaçınmak için dilinizi tutun."
+          en: "Overly blunt or snooping behavior creates conflict. Balance your thirst for info with respect for privacy.",
+          tr: "Fazla sert veya meraklı davranışlar çatışma yaratır. Bilgi isteğinizi mahremiyete saygıyla dengeleyin."
         }
       },
       {
         name: "Page of Wands",
         image: "images/pageofwands.jpg",
         upright: {
-          en: "Enthusiastic exploration—embrace new ideas with childlike wonder.",
-          tr: "Hevesli keşif—yeni fikirlere çocukça bir merakla yaklaşın."
+          en: "Bursting enthusiasm leads you to explore fresh horizons. Let optimism guide each step.",
+          tr: "Coşkulu heyecan sizi yeni ufukları keşfetmeye yöneltiyor. Her adımda iyimserliğe güvenin."
         },
         reversed: {
-          en: "Reckless or unfocused. Refine your spark so it can truly ignite.",
-          tr: "Düşüncesiz veya odaklanamayan. Kıvılcımınızı düzgünce ateşlemek için netleştirin."
+          en: "Restless or unfocused impulses hinder progress. Ground your passion in concrete plans to move forward.",
+          tr: "Huzursuz veya odaklanamayan dürtüler ilerlemeyi aksatıyor. Tutkunuzu somut planlarla temellendirerek ilerleyin."
         }
       },
       {
         name: "Queen of Wands",
         image: "images/queenofwands.jpg",
         upright: {
-          en: "Confident creativity and charm—light the room with your spark.",
-          tr: "Kendine güvenen yaratıcılık ve çekicilik—kıvılcımınızla ortamı aydınlatın."
+          en: "Radiant confidence and magnetic charm. Share your creative spark, and watch others draw inspiration.",
+          tr: "Işıl ışıl özgüven ve mıknatıs gibi bir çekicilik. Yaratıcı kıvılcımınızı paylaşın ve başkalarının ilham alışını izleyin."
         },
         reversed: {
-          en: "Overly dramatic or controlling. Let others shine too.",
-          tr: "Aşırı dramatik veya kontrolcü. Başkalarının da parlamasına izin verin."
+          en: "Dominant or attention-seeking behaviors can stifle cooperation. Let others shine alongside you.",
+          tr: "Baskın veya ilgi isteyen davranışlar işbirliğini gölgeleyebilir. Başkalarının da sizinle parlamasına izin verin."
         }
       },
 
-      /******* Kalan tüm kartlar (örnek 54 kart) yine de eklenmeli *******/
-      /******* Burada, brevity için yazmıyoruz. Diğerler Wikimedia vs. *******/
-
-      /* Örneğin alt tarafta normal linklerle ekleyebilirsiniz vs. 
-         Aynı mantıkla upright/reversed -> { en: "...", tr: "..." } 
-      */
+      // Geri kalan 54 kart: Wikimedia + 2-dilli upright/reversed
+      {
+        name: "3 - The Empress", // ÖRNEK
+        image: "https://upload.wikimedia.org/wikipedia/commons/b/b9/RWS_Tarot_03_Empress.jpg",
+        upright: {
+          en: "Abundance, creativity, and nurturing love. A time to grow and bloom in all endeavors.",
+          tr: "Bolluk, yaratıcılık ve şefkatli sevgi. Tüm girişimlerde büyüyüp çiçek açma zamanı."
+        },
+        reversed: {
+          en: "Blocked growth or smothering influences may hinder progress. Loosen control for natural expansion.",
+          tr: "Engellenmiş büyüme veya bunaltıcı etkiler ilerlemeyi durdurabilir. Doğal gelişim için kontrolü hafifletin."
+        }
+      },
+      // ...
+      // 53 diğer kart da benzer şekilde (burada kısaltıyoruz).
     ];
 
     /************************************************************
-     *           100 SPECIAL 3-CARD SYNERGY COMBOS (BILANG)     *
-     *  Her combo => 2 dilde de dramatik mesaj.                 *
+     *            DAİLY DRAW + STREAK (LOCALSTORAGE)            *
+     *            (NO COMBO SYSTEM, JUST 3 CARDS)               *
      ************************************************************/
-    const specialCombos = {};
-    function generateComboMessages(count = 100) {
-      const synergyTextsEN = [
-        "Cosmic forces converge in rare harmony. Heed the astral whispers binding these three fates.",
-        "A celestial tapestry unfolds in this trio, revealing hidden truths that echo across the stars.",
-        "When these paths unite, the heavens tremble with a potent omen. Let your spirit heed the call.",
-        "Astrological currents weave these cards together, forming a gateway to profound revelation.",
-        "A majestic chord resonates through the cosmic spheres, signaling transformation through this union."
-      ];
-      const synergyTextsTR = [
-        "Kozmik güçler nadir bir uyum içinde birleşiyor. Bu üç kaderi bağlayan yıldız fısıltılarına kulak ver.",
-        "Bu üçlüde ilahi bir motif açığa çıkıyor, yıldızlar arasında yankılanan gizli hakikatler ortaya saçılıyor.",
-        "Bu yollar birleştiğinde gökler güçlü bir alametle sarsılır. Ruhun, bu çağrıya kulak versin.",
-        "Göksel akıntılar bu kartları bir araya getiriyor; derin bir keşif kapısı aralandı.",
-        "Kozmik kürelerde görkemli bir ezgi duyuluyor; bu birlik dönüşüm müjdeliyor."
-      ];
+    // localStorage keys
+    let lastDrawDate = localStorage.getItem("dailyTarotLastDraw") || null;
+    let streakCount = parseInt(localStorage.getItem("dailyTarotStreak") || "0");
 
-      const used = new Set();
-      let attempts = 0;
-      while (Object.keys(specialCombos).length < count && attempts < 5000) {
-        attempts++;
-        // pick 3 distinct indexes
-        const idxSet = new Set();
-        while (idxSet.size < 3) {
-          idxSet.add(Math.floor(Math.random() * tarotDeck.length));
-        }
-        const sortedIdx = [...idxSet].sort((a,b)=>a-b);
-
-        // random reversed states
-        const revArray = sortedIdx.map(()=> Math.random()<0.5);
-        
-        // build key
-        const comboKey = sortedIdx.map((deckI, index)=>{
-          return tarotDeck[deckI].name + "-" + revArray[index];
-        }).join(";");
-
-        if(!used.has(comboKey)) {
-          used.add(comboKey);
-          // pick random synergy text (English + Turkish)
-          const randomEN = synergyTextsEN[Math.floor(Math.random() * synergyTextsEN.length)];
-          const randomTR = synergyTextsTR[Math.floor(Math.random() * synergyTextsTR.length)];
-          specialCombos[comboKey] = {
-            en: randomEN,
-            tr: randomTR
-          };
-        }
-      }
-    }
-    generateComboMessages();
-
-    /************************************************************
-     *     DAILY DRAW LOGIC + STREAK + BILINGUAL DESCRIPTIONS   *
-     ************************************************************/
-    const langToggleButton = document.getElementById("langToggleBtn");
-    let currentLang = "en"; // varsayılan
-    langToggleButton.addEventListener("click", () => {
-      currentLang = (currentLang === "en") ? "tr" : "en";
-      applyLanguage();
-    });
-
-    const titleText = document.getElementById("titleText");
-    const subtitleText = document.getElementById("subtitleText");
-    const drawCardsBtn = document.getElementById("drawCardsBtn");
-    const messageDiv = document.getElementById("message");
-    const streakContainer = document.getElementById("streakContainer");
+    const drawButton = document.getElementById("drawCardsBtn");
     const threeCardsContainer = document.getElementById("threeCardsContainer");
-    const comboMessage = document.getElementById("comboMessage");
-
-    function applyLanguage() {
-      const txt = uiTexts[currentLang];
-      titleText.textContent = txt.title;
-      subtitleText.textContent = txt.subtitle;
-      drawCardsBtn.textContent = txt.drawButton;
-      
-      // eğer bugünün kartı çekildiyse mesaj güncellensin
-      const todayStr = formatDate();
-      if (lastDrawDate === todayStr) {
-        messageDiv.textContent = txt.alreadyDrewMsg;
-      }
-      updateStreakDisplay(); // streak label -> "Streak" vs "Seri"
-    }
 
     function formatDate(d = new Date()) {
-      const day = String(d.getDate()).padStart(2, "0");
-      const mon = String(d.getMonth()+1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2,"0");
+      const mon = String(d.getMonth()+1).padStart(2,"0");
       const yr = d.getFullYear();
       return `${day}.${mon}.${yr}`;
     }
 
-    let lastDrawDate = localStorage.getItem("dailyTarotLastDraw") || null;
-    let streakCount = parseInt(localStorage.getItem("dailyTarotStreak") || "0");
-
     function updateStreakDisplay() {
-      const txt = uiTexts[currentLang];
-      streakContainer.textContent = `${txt.streakLabel}: ${streakCount} 🔥`;
+      const t = uiTexts[currentLang];
+      const label = t.streakLabel; // "Streak" or "Seri"
+      streakContainer.textContent = `${label}: ${streakCount} 🔥`;
     }
 
-    // Streak kontrolü (sayfa yüklenirken)
+    // streak check on load
     (function checkStreakOnLoad() {
-      if (!lastDrawDate) {
+      if(!lastDrawDate) {
         streakCount = 0;
-        localStorage.setItem("dailyTarotStreak", "0");
+        localStorage.setItem("dailyTarotStreak","0");
       } else {
-        const today = formatDate();
-        if (lastDrawDate !== today) {
+        const todayStr = formatDate();
+        if(lastDrawDate !== todayStr) {
+          // check gap
           const [dd, mm, yy] = lastDrawDate.split(".").map(Number);
           const lastDateObj = new Date(yy, mm-1, dd);
           const now = new Date();
           const diffTime = now - lastDateObj;
           const diffDays = Math.floor(diffTime / (1000*60*60*24));
-          if (diffDays > 1) {
-            // arada en az 1 boş gün
+          if(diffDays > 1) {
+            // missed day(s)
             streakCount = 0;
-            localStorage.setItem("dailyTarotStreak", "0");
+            localStorage.setItem("dailyTarotStreak","0");
           }
         }
       }
-      // Dil ayarını uygula (ilk açılışta varsayılan EN)
-      applyLanguage();
+      applyLanguage(); // ilk dil ayarlarını uygula
     })();
 
-    // Kart çekme butonu
-    drawCardsBtn.addEventListener("click", () => {
-      const txt = uiTexts[currentLang];
+    drawButton.addEventListener("click", () => {
+      const t = uiTexts[currentLang];
       messageDiv.textContent = "";
-      comboMessage.style.display = "none";
-      comboMessage.textContent = "";
+      threeCardsContainer.innerHTML = "";
 
-      const today = formatDate();
-      if (lastDrawDate === today) {
-        // zaten çekildi
-        messageDiv.textContent = txt.alreadyDrewMsg;
+      const todayStr = formatDate();
+      if(lastDrawDate === todayStr) {
+        // same day draw blocked
+        messageDiv.textContent = t.alreadyDrewMsg;
         return;
       }
 
-      // normal çekim
-      threeCardsContainer.innerHTML = "";
+      // proceed with draw
       const idxSet = new Set();
-      while (idxSet.size < 3) {
-        idxSet.add(Math.floor(Math.random() * tarotDeck.length));
+      while(idxSet.size < 3) {
+        idxSet.add(Math.floor(Math.random()*tarotDeck.length));
       }
       const chosenIdxs = [...idxSet].sort((a,b)=>a-b);
-      
-      const comboKeyParts = [];
-      const posLabels = [txt.positionPast, txt.positionPresent, txt.positionFuture];
 
-      chosenIdxs.forEach((deckI, i)=>{
-        const cardObj = tarotDeck[deckI];
-        const isReversed = Math.random() < 0.5;
+      const posLabels = [t.positionPast, t.positionPresent, t.positionFuture];
 
-        // Kart container
+      chosenIdxs.forEach((deckIndex, i) => {
+        const cardObj = tarotDeck[deckIndex];
+        const isRev = Math.random()<0.5;
+        
         const cardDiv = document.createElement("div");
         cardDiv.className = "card-container";
 
@@ -764,50 +671,38 @@
         label.textContent = posLabels[i];
         cardDiv.appendChild(label);
 
-        // görsel
-        const img = document.createElement("img");
-        img.src = cardObj.image;
-        if (isReversed) {
-          img.style.transform = "rotate(180deg)";
+        // image
+        const imgEl = document.createElement("img");
+        imgEl.src = cardObj.image;
+        if(isRev) {
+          imgEl.style.transform = "rotate(180deg)";
         }
-        cardDiv.appendChild(img);
+        cardDiv.appendChild(imgEl);
 
-        // başlık
-        const title = document.createElement("h5");
-        title.className = "card-title";
-        title.textContent = cardObj.name + (isReversed ? " (Reversed)" : "");
-        cardDiv.appendChild(title);
+        // title
+        const titleEl = document.createElement("h5");
+        titleEl.className = "card-title";
+        titleEl.textContent = cardObj.name + (isRev ? " (Reversed)" : "");
+        cardDiv.appendChild(titleEl);
 
-        // açıklama
-        const descP = document.createElement("p");
-        descP.className = "card-desc";
-        // cardObj.upright / reversed => { en: "...", tr: "..." }
-        descP.textContent = isReversed
+        // desc
+        const descEl = document.createElement("p");
+        descEl.className = "card-desc";
+        // choose language upright/reversed
+        descEl.textContent = isRev
           ? cardObj.reversed[currentLang]
           : cardObj.upright[currentLang];
-        cardDiv.appendChild(descP);
+        cardDiv.appendChild(descEl);
 
         threeCardsContainer.appendChild(cardDiv);
-
-        comboKeyParts.push(`${cardObj.name}-${isReversed}`);
       });
 
-      // synergy check
-      const finalKey = comboKeyParts.join(";");
-      if (specialCombos[finalKey]) {
-        // special synergy
-        comboMessage.textContent = specialCombos[finalKey][currentLang];
-      } else {
-        comboMessage.textContent = txt.synergyFallback;
-      }
-      comboMessage.style.display = "block";
-
-      // daily usage
-      lastDrawDate = today;
+      // mark daily usage
+      lastDrawDate = todayStr;
       localStorage.setItem("dailyTarotLastDraw", lastDrawDate);
 
       // streak
-      if (streakCount <= 0) {
+      if(streakCount <= 0) {
         streakCount = 1;
       } else {
         streakCount++;
